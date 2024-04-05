@@ -1,3 +1,5 @@
+import warnings
+warnings.filterwarnings('ignore',category=FutureWarning)
 import tensorflow.contrib.layers as layers
 import sys
 import copy,random
