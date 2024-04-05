@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 import tensorflow as tf
-
+tf.get_logger().setLevel('ERROR')
 from boml import utils
 
 Hyper_Optim_Method = ["MAML", "FOMAML", "MSGD", "MTNet"]
