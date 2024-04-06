@@ -8,7 +8,7 @@ import matplotlib as mpl
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--method', type=str, default='pic2json', metavar='STRING',
-                    help='pic2json, pic2mat or plot.')
+                    help='pic2json, pic2mat, plot_json, plot_pic.')
 parser.add_argument('-fi', '--filename_input', type=str, default='Notes.pickle', metavar='STRING',
                     help='filename of input.')
 parser.add_argument('-fo', '--filename_output', type=str, default='file.json', metavar='STRING',
@@ -51,10 +51,32 @@ if args.method=='pic2mat':
 
     print(f"已将Pickle数据转换为MATLAB的.mat格式，并保存到 '{args.filename_output}'")
 
-if args.method=='plot':
+if args.method=='plot_json':
     with open(args.filename_input,'r') as file:
         data = json.load(file)
 
+    x = np.array(data[args.plot_x])
+    y = np.array(data[args.plot_y])
+    plt.plot(x, y)
+    plt.savefig(args.filename_output)
+    
+    print(f"已将'{args.filename_input}'中数据{args.plot_x}(x)-{args.plot_y}(y)的线图，并保存到 '{args.filename_output}'")
+
+if args.method=='plot_pic':
+# 步骤1: 从Pickle文件读取数据
+    with open(args.filename_input, 'rb') as pickle_file:
+        data = pickle.load(pickle_file)
+
+# 步骤2: 将数据转换为JSON格式
+# 使用default函数来处理float32等不可直接序列化的类型
+    json_data = json.dumps(data, indent=4, default=default)
+
+# 步骤3: 将JSON数据写入到文件
+    with open('temp.json', 'w') as json_file:
+        json_file.write(json_data)
+
+    with open('temp.json','r') as file:
+        data = json.load(file)
     x = np.array(data[args.plot_x])
     y = np.array(data[args.plot_y])
     plt.plot(x, y)
