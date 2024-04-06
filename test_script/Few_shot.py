@@ -1,3 +1,5 @@
+import warnings
+warnings.filterwarnings('ignore',category=FutureWarning)
 import sys
 import inspect, os
 sys.path.append('../')
