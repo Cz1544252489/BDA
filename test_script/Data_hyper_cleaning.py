@@ -178,7 +178,7 @@ def g_logits(x,y):
     return logits
 
 # set up model
-#datasets=boml.load_data.mnist(folder=os.path.join(os.getcwd(), 'MNIST_DATA'), partitions=(1/14, 1/14))
+
 fashion_mnist_datasets=boml.load_data.mnist(partitions=(1/14, 1/14))
 ex = boml.BOMLExperiment(datasets=fashion_mnist_datasets)
 
@@ -208,14 +208,6 @@ ex.errors['outer_training'] = outer_cross_entropy_loss(pred=repr_out_val, label=
 ex.errors['validation'] = outer_cross_entropy_loss(pred=repr_out_val, label=ex.y_)
 
 logits_val = tf.nn.softmax(repr_out_val)
-#f1_score_micro = F1_score(y_pred=logits_val,y_true=ex.y_,average='micro')
-#f1_score_macro = F1_score(y_pred=logits_val,y_true=ex.y_,average='macro')
-#f1_score_weighted = F1_score(y_pred=logits_val,y_true=ex.y_,average='weighted')
-#lr = boml.get_outerparameter('lr', initializer=0.01)
-
-# ce = tf.nn.softmax_cross_entropy_with_logits(labels=y, logits=logits)
-# L = tf.reduce_mean(tf.sigmoid(lambdas)*ce)
-# E = tf.reduce_mean(ce)
 
 optim_dict = boml_ho.ll_problem(inner_objective=ex.errors['training'], learning_rate=args.lr, s=args.ba_s, t=args.ba_t,
                                 inner_objective_optimizer='SGD', outer_objective=ex.errors['validation'],
@@ -230,7 +222,7 @@ boml_ho.ul_problem(outer_objective=ex.errors['validation'], inner_grad=optim_dic
 hyper_step = boml_ho.aggregate_all()
 
 ## Load data
-#train_set, validation_set, test_set = get_data()
+
 train_set, validation_set, test_set = fashion_mnist_datasets.train,fashion_mnist_datasets.validation,fashion_mnist_datasets.test
 train_set_polluted, correct_label, incorrect_local, incorrect_local_hot = pollute(train_set,
                                                                                   int(0.5 * train_set.target.shape[0]))
@@ -261,7 +253,7 @@ tf.global_variables_initializer().run()
 ex.model.initialize()
 print('inner:', ex.errors['training'].eval(train_inner_set_supplier()))
 print('outer:', ex.errors['validation'].eval(train_outer_set_supplier()))
-# print('-'*50)
+
 start_time=time.time()
 n_hyper_iterations = args.meta_train_iterations
 for _ in range(n_hyper_iterations):
@@ -294,7 +286,4 @@ for _ in range(n_hyper_iterations):
     print('-'*50)
     save_obj(os.path.join(os.getcwd(), str(args.Notes)+'.pickle'), results)
     start_time = time.time()
-# # plt.plot(tr_accs, label='training accuracy')
-# # plt.plot(val_accs, label='validation accuracy')
-# # plt.legend(loc=0, frameon=True)
-# # # plt.xlim(0, 19)
+
