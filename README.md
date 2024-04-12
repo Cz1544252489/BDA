@@ -22,8 +22,8 @@ You can run the python file for different applications following the script belo
 
 ```
 cd test_script
-Python Few_shot.py --classes=5 --examples_train=1 --examples_test=1 --meta_batch_size=1 --alpha=0.4 # For few shot classification tasks.
-Python  Data_hyper_cleaning.py # For data hyper-cleaning tasks.
+python Few_shot.py --classes=5 --examples_train=1 --examples_test=1 --meta_batch_size=1 --alpha=0.4 # For few shot classification tasks.
+python  Data_hyper_cleaning.py # For data hyper-cleaning tasks.
 ```
 As for the few shot classification tasks, the default parameters are for 5 way 1 shot classification on omniglot. You can modify the `script_helper.py` for more different settings. 
  
